@@ -12,4 +12,6 @@ output_videos/*mp4
 output_videos/*jpg
 output_videos/*avi
 training/football-players-detection-1/
+training/football_training_yolo_v5.ipynb
+
 runs/
