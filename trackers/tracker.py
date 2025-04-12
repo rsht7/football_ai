@@ -200,9 +200,27 @@ class Tracker:
 
 
     
+    def draw_ball_control(self, frame, frame_num, team_ball_control):
 
+        overlay = frame.copy()
+        cv2.rectangle(overlay, (650, 0), (1300, 70), (0,0,0), -1)
+        alpha_value = 0.4
+        cv2.addWeighted(overlay, alpha_value, frame, 1 - alpha_value, 0, frame)
 
-    def draw_annotations(self, video_frames, tracks):
+        ball_control_till_current_frame = team_ball_control[:frame_num+1]
+
+        team_A_frames = ball_control_till_current_frame[ball_control_till_current_frame == 1].shape[0]
+        team_B_frames = ball_control_till_current_frame[ball_control_till_current_frame == 2].shape[0]
+        team_A = team_A_frames/(team_A_frames + team_B_frames) * 100
+        team_B = team_B_frames/(team_A_frames + team_B_frames) * 100
+
+        cv2.putText(frame, f'Team A: {team_A:.2f}%', (675, 40), cv2.FONT_HERSHEY_COMPLEX, 1, (255,255,255), 4)
+        cv2.putText(frame, f'Team B: {team_B:.2f}%', (1000, 40), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 255, 255), 4)
+
+        return frame
+    
+
+    def draw_annotations(self, video_frames, tracks, team_ball_control):
         output_video_frames = []
         for frame_num, frame in enumerate(video_frames):
             frame = frame.copy()
@@ -232,6 +250,8 @@ class Tracker:
             for track_id, ball in ball_dict.items():
                 frame = self.draw_triangle(frame, ball['bbox'], (0,255,0))
             
+            #now adding the team ball control percentage display
+            frame = self.draw_ball_control(frame, frame_num, team_ball_control)
 
             output_video_frames.append(frame)
 

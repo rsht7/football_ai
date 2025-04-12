@@ -17,7 +17,7 @@ def main():
     # Initializing the tracker
     tracker = Tracker('models/bestx.pt', video_path)
     tracks = tracker.get_object_tracks(video_frames,
-                              read_from_stub=False,
+                              read_from_stub=True,
                               stub_path='stubs/track_stubs.pkl')
     
     #Save cropped img of player
@@ -51,6 +51,7 @@ def main():
 
 
     # Assigning ball to player
+    team_ball_control = []
     player_assigner = PlayerBallAssigner()
     for frame_num, player_track in enumerate(tracks['players']):
         # if 1 not in tracks['ball'][frame_num]:
@@ -60,28 +61,33 @@ def main():
 
         if assigned_player!= -1:
             tracks['players'][frame_num][assigned_player]['has_ball'] = True
+            team_ball_control.append(tracks['players'][frame_num][assigned_player]['team'])
 
-    for frame_num, player_track in enumerate(tracks['players']):
-        ball_data = tracks['ball'][frame_num]
+        else:
+            team_ball_control.append(team_ball_control[-1])
+    team_ball_control = np.array(team_ball_control)
+
+    # for frame_num, player_track in enumerate(tracks['players']):
+    #     ball_data = tracks['ball'][frame_num]
     
-        # Check if ball data exists and is valid
-        if not ball_data or 'bbox' not in ball_data[1]:
-            continue  # Skip this frame if ball data is missing
+    #     # Check if ball data exists and is valid
+    #     if not ball_data or 'bbox' not in ball_data[1]:
+    #         continue  # Skip this frame if ball data is missing
     
-        ball_bbox = ball_data[1]['bbox']
+    #     ball_bbox = ball_data[1]['bbox']
 
-        # Check if bbox contains NaN values
-        if any(math.isnan(coord) for coord in ball_bbox):
-            continue  # Skip this frame
+    #     # Check if bbox contains NaN values
+    #     if any(math.isnan(coord) for coord in ball_bbox):
+    #         continue  # Skip this frame
 
-        assigned_player = player_assigner.assign_ball_to_player(player_track, ball_bbox)
+    #     assigned_player = player_assigner.assign_ball_to_player(player_track, ball_bbox)
 
-        if assigned_player != -1:
-            tracks['players'][frame_num][assigned_player]['has_ball'] = True
+    #     if assigned_player != -1:
+    #         tracks['players'][frame_num][assigned_player]['has_ball'] = True
 
 
     #Drawing o/p with circles and obj_tracks
-    output_video_frames = tracker.draw_annotations(video_frames, tracks)
+    output_video_frames = tracker.draw_annotations(video_frames, tracks, team_ball_control)
 
 
     # Saving video
