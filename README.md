@@ -27,14 +27,10 @@ FootballAnalysisAI is an intelligent football match analysis system that helps t
 5. **Ball Interpolation**  
    When the ball is not detected in a frame (due to occlusion or blur), **ball position is estimated** using interpolation techniques based on nearby frames.
 
-6. **Web-Based Interface**  
-   A **Flask web application** allows users to:
-   - Upload full match videos 🎥  
-   - View processed analytics and visual breakdowns of team performance 📊
 
 ---
 
-## 📸 Interface Snapshots
+## 📸 INPUT/OUTPUT Snapshots
 
 <div align="center">
 
