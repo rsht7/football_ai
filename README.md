@@ -34,9 +34,10 @@ FootballAnalysisAI is an intelligent football match analysis system that helps t
 
 <div align="center">
 
-<img src="upload.png" width="700" alt="Upload Interface"><br><br>
-<img src="processing.png" width="700" alt="Processing Frame"><br><br>
-<img src="possession_chart.png" width="700" alt="Ball Possession Chart">
+<img src="ip.png" width="700" alt="Upload Interface"><br><br>
+<img src="op.png" width="700" alt="Processing Frame"><br><br>
+<img src="ip2.png" width="700" alt="Processing Frame"><br><br>
+<img src="op2.png" width="700" alt="Ball Possession Chart">
 
 </div>
 
